@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartas Alinhadas</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #8b1da3;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+
+        .circle {
+            width: 380px;
+            height: 380px;
+            background-color: #ff9f1c;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .card {
+            width: 170px;
+            height: 110px;
+            background-color: #e9e2d0;
+            position: absolute;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+            box-shadow: 2px 5px 15px rgba(0,0,0,0.15);
+        }
+
+        /* ESTADO INICIAL (Empilhadas e Tortinhas como a foto) */
+        #c1 { transform: translate(15px, -15px) rotate(-25deg); z-index: 3; }
+        #c2 { transform: translate(5px, 0px) rotate(-25deg); z-index: 2; }
+        #c3 { transform: translate(-5px, 15px) rotate(-25deg); z-index: 1; }
+
+        .card span {
+            font-size: 18px;
+            color: #333;
+            font-weight: bold;
+            opacity: 0;
+            text-align: center;
+            transition: opacity 0.3s;
+        }
+
+        /* --- ESTADO HOVER (RETAS E VERTICAIS) --- */
+
+        .circle:hover .card {
+            width: 260px;
+            height: 380px;
+            border-radius: 12px;
+            /* Reset crucial: mata qualquer rotação e translação anterior */
+            transform: rotate(0deg) translate(0, 0) !important;
+        }
+
+        /* Posicionamento Lateral */
+        .circle:hover #c1 {
+            left: -320px;
+        }
+
+        .circle:hover #c2 {
+            left: 50%;
+            /* O translate aqui é apenas para centralizar o próprio card no meio */
+            transform: translateX(-50%) rotate(0deg) !important;
+            z-index: 10;
+        }
+
+        .circle:hover #c3 {
+            left: 440px;
+        }
+
+        .circle:hover .card span {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="circle">
+        <div class="card" id="c1"><span>Frase 1</span></div>
+        <div class="card" id="c2"><span>Frase 2</span></div>
+        <div class="card" id="c3"><span>Frase 3</span></div>
+    </div>
+
+    <script>
+        const frases = [
+            "O sucesso está nos detalhes.",
+            "Sua ideia vai decolar hoje!",
+            "Confie na sua intuição.",
+            "A sorte favorece os audazes.",
+            "Acredite no processo."
+        ];
+
+        function embaralhar() {
+            const spans = document.querySelectorAll('.card span');
+            let lista = [...frases].sort(() => 0.5 - Math.random());
+            spans.forEach((span, i) => span.innerText = lista[i]);
+        }
+
+        embaralhar();
+
+        document.querySelector('.circle').addEventListener('mouseleave', () => {
+            setTimeout(embaralhar, 700);
+        });
+    </script>
+</body>
+</html>
