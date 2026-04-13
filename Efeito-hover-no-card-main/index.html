@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio das Cartas</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #8b1da3; /* Roxo da imagem */
+            font-family: sans-serif;
+            overflow: hidden;
+        }
+
+        /* Círculo Laranja */
+        .container {
+            width: 350px;
+            height: 350px;
+            background-color: #ff9f1c; /* Laranja da imagem */
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column; /* Alinha os retângulos em coluna */
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+
+        /* Estado Inicial: Retângulos deitados com espaço */
+        .card {
+            width: 150px;
+            height: 25px;
+            background-color: #e9e2d0; /* Bege claro das cartas */
+            margin: 8px 0; /* Espaço entre os retângulos */
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute; /* Para podermos mover livremente no hover */
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Posicionamento inicial um abaixo do outro */
+        #c1 { transform: translateY(-45px); }
+        #c2 { transform: translateY(0px); }
+        #c3 { transform: translateY(45px); }
+
+        /* Texto escondido inicialmente */
+        .card span {
+            font-size: 16px;
+            color: #333;
+            opacity: 0;
+            text-align: center;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        /* --- ESTADO HOVER (Igual à imagem de referência) --- */
+
+        /* Container não muda, mas as cartas sim */
+        .container:hover .card {
+            width: 250px;
+            height: 320px;
+            border-radius: 8px;
+            transform: translateY(0); /* Reseta o alinhamento vertical */
+        }
+
+        /* Carta Esquerda */
+        .container:hover #c1 {
+            left: -280px; /* Sai do círculo para a esquerda */
+        }
+
+        /* Carta Meio (Fica sobre o círculo) */
+        .container:hover #c2 {
+            left: 50px; 
+        }
+
+        /* Carta Direita */
+        .container:hover #c3 {
+            left: 380px; /* Sai do círculo para a direita */
+        }
+
+        /* Mostra o texto no hover */
+        .container:hover .card span {
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="card" id="c1"><span>Sua primeira frase aleatória</span></div>
+        <div class="card" id="c2"><span>Sua segunda frase aleatória</span></div>
+        <div class="card" id="c3"><span>Sua terceira frase aleatória</span></div>
+    </div>
+
+    <script>
+        // Função para frases aleatórias
+        const frases = [
+            "O sucesso é a soma de pequenos esforços.",
+            "A persistência realiza o impossível.",
+            "Grandes jornadas começam com um passo.",
+            "Seu código hoje está excelente!",
+            "Tudo o que você precisa é foco.",
+            "A sorte favorece os audazes.",
+            "Continue explorando novas ideias."
+        ];
+
+        function carregarFrases() {
+            const spans = document.querySelectorAll('.card span');
+            let embaralhado = [...frases].sort(() => 0.5 - Math.random());
+            spans.forEach((span, i) => {
+                span.innerText = embaralhado[i];
+            });
+        }
+
+        // Carrega ao iniciar
+        carregarFrases();
+
+        // Troca ao tirar o mouse para a próxima vez ser diferente
+        document.querySelector('.container').addEventListener('mouseleave', () => {
+            setTimeout(carregarFrases, 600);
+        });
+    </script>
+</body>
+</html>
